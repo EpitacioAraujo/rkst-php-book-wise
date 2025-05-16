@@ -1,0 +1,13 @@
+name: phping
+
+services:
+  app:
+    container_name: phping-app
+    build:
+      dockerfile: ./Dockerfile
+      context: .
+    ports:
+      - 7000:8000 
+    volumes:
+      - ./src:/app/src
+      - ./composer.json:/app/composer.json
