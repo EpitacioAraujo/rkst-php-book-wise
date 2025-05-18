@@ -10,7 +10,7 @@
     <title>Start</title>
 </head>
 
-<body class="bg-stone-900 text-stone-400 px-3">
+<body class="bg-stone-900 text-stone-400">
     <?= $content ?>
 </body>
 

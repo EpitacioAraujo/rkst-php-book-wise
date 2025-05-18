@@ -1,8 +1,8 @@
-<header class="w-full bg-stone-900">
-    <nav class="max-w-screen-lg mx-auto flex flex-row justify-between items-center">
+<header class="w-full bg-stone-700 pt-4 pb-4">
+    <nav class="max-w-screen-lg mx-auto flex flex-row justify-between items-center px-3">
         <div class="font-bold text-xl tracking-wide">Book wise</div>
 
-        <ul class="space-x-4 text-bold">
+        <ul class="flex space-x-4 font-bold">
             <li class="text-lime-500"><a href="/explorar">Explorar</a></li>
             <li class="hover:underline"><a href="/livros">Meus livros</a></li>
         </ul>
