@@ -5,8 +5,7 @@
             "Epitas\\App\\": "src/"
         },
         "files": [
-            "src/Utils/Render.php",
-            "src/Utils/Router.php"
+            "src/Utils/Render.php"
         ]
     },
     "require": {}
