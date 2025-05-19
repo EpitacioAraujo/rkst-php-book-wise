@@ -18,17 +18,17 @@
 
                     <div class="flex-[1] flex flex-col align-left gap-1">
                         <a href="/livro?" class="font-semibold text-lg">
-                            <?= $livro['titulo'] ?>
+                            <?= $livro->titulo ?>
                         </a>
                         <div class="text-xs italic">
-                            <?= $livro['autor'] ?>
+                            <?= $livro->autor ?>
                         </div>
                         <div class="text-xs italic">⭐⭐⭐⭐⭐(3 Avaliações)</div>
                     </div>
                 </div>
 
                 <p class="mt-5">
-                    <?= $livro['descricao'] ?>
+                    <?= $livro->descricao ?>
                 </p>
             </div>
         <?php endforeach; ?>

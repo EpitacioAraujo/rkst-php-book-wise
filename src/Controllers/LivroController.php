@@ -4,14 +4,14 @@ namespace Epitas\App\Controllers;
 
 class LivroController {
     public static function index() {
+        $livroId = $_GET['id'];
+
         global $db;
 
-        $query = $db->query('SELECT * FROM livros');
+        $livro = $db->livro($livroId);
 
-        $livros = $query->fetchAll();
-
-        return render('pages/home/home', [
-            "livros" => $livros
+        return render('pages/livro/livro', [
+            "livro" => $livro
         ]);
     }
 }
