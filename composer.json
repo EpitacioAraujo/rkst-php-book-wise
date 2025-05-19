@@ -5,6 +5,7 @@
             "Epitas\\App\\": "src/"
         },
         "files": [
+            "src/Utils/Functions.php",
             "src/Utils/Render.php"
         ]
     },

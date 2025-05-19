@@ -9,7 +9,7 @@ function render($view, $data = []) {
 
     // Include the view file
     include __DIR__ . '/../views/' . $view . '.php';
-
+    
     // Get the contents of the output buffer
     $output = ob_get_clean();
 
