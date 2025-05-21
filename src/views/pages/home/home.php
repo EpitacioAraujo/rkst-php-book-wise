@@ -1,4 +1,4 @@
-<?= render('pages/home/partials/header') ?>
+<?= render('partials/header/header') ?>
 <?= render('pages/home/partials/main', [
     "livros" => $livros
 ]) ?>

@@ -3,7 +3,7 @@
         <div class="font-bold text-xl tracking-wide">Book wise</div>
 
         <ul class="flex space-x-4 font-bold">
-            <li class="text-lime-500"><a href="/explorar">Explorar</a></li>
+            <li class="text-lime-500"><a href="/">Explorar</a></li>
             <li class="hover:underline"><a href="/livros">Meus livros</a></li>
         </ul>
 

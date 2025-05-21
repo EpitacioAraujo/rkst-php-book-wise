@@ -1,0 +1,7 @@
+create table livros (
+    id integer primary key,
+    titulo varchar(255) not null,
+    autor varchar(255) not null,
+    descricao text,
+    ano_lancamento int
+);

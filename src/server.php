@@ -70,7 +70,11 @@ $content = Router::resolve($_SERVER['REQUEST_METHOD'], $currentPath);
 if ($content === false) {
     // Rota não encontrada
     http_response_code(404);
-    echo 'Página não encontrada';
+    $content = render('pages/404/404');
+
+    echo render('partials/layout/layout', [
+        'content' => $content,
+    ]);
     exit;
 }
 

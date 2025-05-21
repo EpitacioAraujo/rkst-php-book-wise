@@ -6,7 +6,8 @@ class IndexController {
     public static function index() {
         global $db;
 
-        $livros = $db->livros();
+        $pesquisa = $_REQUEST['pesquisa'] ?? '';
+        $livros = $db->livros($pesquisa);
 
         return render('pages/home/home', [
             "livros" => $livros

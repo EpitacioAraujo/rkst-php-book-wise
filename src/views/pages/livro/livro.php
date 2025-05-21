@@ -1,3 +1,11 @@
-<pre>
+<!-- <pre>
     <?= var_dump($livro) ?>
-</pre>
+</pre> -->
+
+<?= render('partials/header/header'); ?>
+
+<div class="mt-5 px-3">
+    <?= render('components/book_details/book_details', [
+        "livro" => $livro
+    ]); ?>
+</div>
