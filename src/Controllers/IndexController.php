@@ -2,12 +2,29 @@
 
 namespace Epitas\App\Controllers;
 
-class IndexController {
-    public static function index() {
-        global $db;
+use Epitas\App\Models\Livro;
 
+class IndexController {
+    public static function index($database) {
         $pesquisa = $_REQUEST['pesquisa'] ?? '';
-        $livros = $db->livros($pesquisa);
+        
+        $sql = <<<SQL
+            SELECT 
+                *
+            FROM livros
+            WHERE 
+                    titulo    LIKE :pesquisa
+                OR  autor     LIKE :pesquisa
+                OR  descricao LIKE :pesquisa
+        SQL;
+        
+        $livros = $database->query(
+            query: $sql,
+            class: Livro::class,
+            params: [
+                "pesquisa" => "%{$pesquisa}%"
+            ]
+        )->fetchAll();
 
         return render('pages/home/home', [
             "livros" => $livros

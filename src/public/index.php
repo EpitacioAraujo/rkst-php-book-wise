@@ -1,10 +1,13 @@
 <?php
 
+$config = require_once __DIR__ . '/../config.php';
+
 require_once __DIR__ . '/../../vendor/autoload.php';
 
-use Epitas\App\DB;
+// Inicializar o container
+$container = \Epitas\App\Utils\Container::getInstance();
 
-global $db;
-$db = new DB();
+// Registrar o serviço de banco de dados
+$container->set('database', new \Epitas\App\Database\DB($config['database']));
 
 require_once __DIR__ . '/../server.php';
