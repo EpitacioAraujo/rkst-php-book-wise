@@ -1,7 +1,3 @@
-<!-- <pre>
-    <?= var_dump($livro) ?>
-</pre> -->
-
 <?= render('partials/header/header'); ?>
 
 <div class="mt-5 px-3">

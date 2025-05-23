@@ -1,5 +1,6 @@
 <?php
 
+use Epitas\App\Controllers\AuthController;
 use Epitas\App\Utils\Router;
 use Epitas\App\Utils\Container;
 use Epitas\App\Controllers\IndexController;
@@ -18,5 +19,12 @@ Router::get(
     path: '/livro',
     action: function () use ($container) {
         return LivroController::index($container->get('database'));
+    }
+);
+
+Router::get(
+    path: '/login',
+    action: function () use ($container) {
+        return AuthController::sigin();
     }
 );

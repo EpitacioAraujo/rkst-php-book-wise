@@ -7,7 +7,9 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <title>Start</title>
+    <?php include realpath(__DIR__ . "/../../../public/assets/styles/styles.php") ?>
+
+    <title>Bookwise</title>
 </head>
 
 <body class="bg-stone-900 text-stone-400">
