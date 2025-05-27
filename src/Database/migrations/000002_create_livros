@@ -3,5 +3,7 @@ create table livros (
     titulo varchar(255) not null,
     autor varchar(255) not null,
     descricao text,
-    ano_lancamento int
+    ano_lancamento int,
+    fk_usuario integer not null,
+    foreign key (fk_usuario) references usuarios(id)
 );

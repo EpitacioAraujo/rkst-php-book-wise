@@ -26,9 +26,15 @@
     <div class="flex-[1] border-2 border-stone-800 rounded-md">
         <h3 class="m-3 font-semibold">Registro</h3>
 
+        <?php if (strlen($mensagem)): ?>
+            <div class="m-3 border-2 border-green-400 bg-green-800 text-green-400 p-2 rounded-md">
+                <?= $mensagem ?>
+            </div>
+        <?php endif; ?>
+
         <hr class="w-full my-3 border-stone-800" />
 
-        <form class="p-3 flex flex-col gap-3">
+        <form class="p-3 flex flex-col gap-3" method="post" action="/singup">
             <div class="flex flex-col gap-2">
                 <label for="nome">Nome</label>
                 <input id="nome" type="text" name="nome" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" required />

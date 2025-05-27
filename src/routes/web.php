@@ -28,3 +28,10 @@ Router::get(
         return AuthController::sigin();
     }
 );
+
+Router::post(
+    path: '/singup',
+    action: function () use ($container) {
+        return AuthController::register($container->get('database'));
+    }
+);
