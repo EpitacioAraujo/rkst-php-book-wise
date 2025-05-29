@@ -3,6 +3,8 @@
 namespace Epitas\App\Controllers;
 
 use Epitas\App\Database\DB;
+use Epitas\App\Libs\Validacao\Validacao;
+use Exception;
 
 class AuthController
 {
@@ -17,20 +19,38 @@ class AuthController
 
     public static function register(DB $db)
     {
-        $sql = <<<SQL
-            INSERT INTO usuarios (nome, email, senha)
-            VALUES (:nome, :email, :senha)
-        SQL;
+        try{
+            $validacao = Validacao::validar([
+                'nome' => ['required'],
+                'email' => ['required', 'email', 'confirmed'],
+                'senha' => ['required', 'min:8', 'strong']
+            ], $_POST);
 
-        $db->query(
-            query: $sql,
-            params: [
-                'nome' => $_POST['nome'],
-                'email' => $_POST['email'],
-                'senha' => password_hash($_POST['senha'], PASSWORD_DEFAULT)
-            ]
-        )->execute();
+            if($validacao->naoPassou()) {
+                $_SESSION['validacao'] = $validacao->validacoes;
+                header('Location: /login');
+                exit();
+            }
 
-        return header('Location: /login?mensagem=Cadastro realizado com sucesso!');
+            $sql = <<<SQL
+                INSERT INTO usuarios (nome, email, senha)
+                VALUES (:nome, :email, :senha)
+            SQL;
+
+            $db->query(
+                query: $sql,
+                params: [
+                    'nome' => $_POST['nome'],
+                    'email' => $_POST['email'],
+                    'senha' => password_hash($_POST['senha'], PASSWORD_DEFAULT)
+                ]
+            )->execute();
+
+            return header('Location: /login?mensagem="Cadastro realizado com sucesso!"');
+        }catch(Exception $ex) {
+            dd([
+                $ex->getMessage()
+            ]);
+        }
     }
 }

@@ -9,12 +9,12 @@
         <form class="p-3 flex flex-col gap-3">
             <div class="flex flex-col gap-2">
                 <label for="email">Email</label>
-                <input id="email" type="text" name="email" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" required />
+                <input id="email" type="text" name="email" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" />
             </div>
 
             <div class="flex flex-col gap-2">
                 <label for="senha">Senha</label>
-                <input id="senha" type="password" name="password" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" required />
+                <input id="senha" type="password" name="password" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" />
             </div>
 
             <div>
@@ -26,7 +26,7 @@
     <div class="flex-[1] border-2 border-stone-800 rounded-md">
         <h3 class="m-3 font-semibold">Registro</h3>
 
-        <?php if (strlen($mensagem)): ?>
+        <?php if (isset($mensagem) && strlen($mensagem)): ?>
             <div class="m-3 border-2 border-green-400 bg-green-800 text-green-400 p-2 rounded-md">
                 <?= $mensagem ?>
             </div>
@@ -34,26 +34,67 @@
 
         <hr class="w-full my-3 border-stone-800" />
 
+        <?php
+            $singup_fields = [
+                "nome" => [
+                    "label" => "Nome",
+                    "name" => "nome",
+                    "type" => "text",
+                ],
+                "email" => [
+                    "label" => "Email",
+                    "name" => "email",
+                    "type" => "text"
+                ],
+                "email_confirm" => [
+                    "label" => "Confirme o email",
+                    "name" => "email_confirm",
+                    "type" => "text"
+                ],
+                "senha" => [
+                    "label" => "Senha",
+                    "name" => "senha",
+                    "type" => "password"
+                ],
+            ];
+        ?>
+
         <form class="p-3 flex flex-col gap-3" method="post" action="/singup">
-            <div class="flex flex-col gap-2">
-                <label for="nome">Nome</label>
-                <input id="nome" type="text" name="nome" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" required />
-            </div>
+            <?php 
+                foreach ( $singup_fields as $campo => $campo_config ): 
+                    [
+                        "name" => $campo_name,
+                        "label" => $campo_label,
+                        "type" => $campo_type
+                    ] = $campo_config;
 
-            <div class="flex flex-col gap-2">
-                <label for="email">Email</label>
-                <input id="email" type="email" name="email" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" required />
-            </div>
+                    $error_mensage = "";
+                    $input_class = "border-stone-800";
+                    
+                    if( isset($_SESSION['validacao']) && isset($_SESSION['validacao'][$campo_name]) ) {
+                        if( sizeof($_SESSION['validacao'][$campo_name]) > 0) {
+                            $error_mensage = $_SESSION['validacao'][$campo_name][0] . "*";
+                            $input_class = "border-red-600";
+                        }
+                    }
+            ?>
+                
+                <div class="flex flex-col gap-2">
+                    <label for="<?= $campo_name ?>">
+                        <?= $campo_label ?>
+                        <span class="text-red-700 text-sm">
+                            <?= $error_mensage ?>
+                        </span>
+                    </label>
 
-            <div class="flex flex-col gap-2">
-                <label for="email_confirm">Confirme o email</label>
-                <input id="email_confirm" type="email" name="email_confirm" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" required />
-            </div>
-
-            <div class="flex flex-col gap-2">
-                <label for="senha">Senha</label>
-                <input id="senha" type="password" name="password" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" required />
-            </div>
+                    <input 
+                        id="<?= $campo_name ?>"
+                        type="<?= $campo_type ?>"
+                        name="<?= $campo_name ?>"
+                        class="border-2 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1 <?= $input_class ?>"
+                    />
+                </div>
+            <?php endforeach; ?>
 
             <div>
                 <button type="reset" class="btn btn-secondary">Cancelar</button>
