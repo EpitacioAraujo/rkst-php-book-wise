@@ -36,9 +36,9 @@ class Validacao {
     }
 
     private function strong( RegraDTO $regra ) {
-        if(!strpos("*", $regra->value))
+        if(!strpbrk($regra->value, "!@#$%¨&*()_+-=[]{}ºª°.,><§¬¢£³²¹", ))
         {
-            return "precisa ter um '*'";
+            return "aomenos 1 caractere especial";
         }
     }
 
