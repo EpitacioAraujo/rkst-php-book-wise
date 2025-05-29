@@ -103,3 +103,5 @@
         </form>
     </div>
 </section>
+
+<?php unset($_SESSION['validacao']) ?>

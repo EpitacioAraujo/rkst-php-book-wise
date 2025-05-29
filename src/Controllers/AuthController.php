@@ -23,6 +23,7 @@ class AuthController
             $validacao = Validacao::validar([
                 'nome' => ['required'],
                 'email' => ['required', 'email', 'confirmed'],
+                'email_confirm' => ['required', 'email'],
                 'senha' => ['required', 'min:8', 'strong']
             ], $_POST);
 

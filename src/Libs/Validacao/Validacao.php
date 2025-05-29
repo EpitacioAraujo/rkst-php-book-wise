@@ -5,38 +5,39 @@ namespace Epitas\App\Libs\Validacao;
 class Validacao {
     public $validacoes = [];
 
-    private function required($campo, $input) {
-        if(!(strlen($input) > 0)) {
-            $label = ucfirst($campo);
+    private function required( RegraDTO $regra ) {
+        if(!(strlen($regra->value) > 0))
+        {
             return "obrigatório";
         }
     }
 
-    private function email($campo, $input) {
-        if(!filter_var($input, FILTER_VALIDATE_EMAIL)) {
+    private function email( RegraDTO $regra ) {
+        if(!filter_var($regra->value, FILTER_VALIDATE_EMAIL)) 
+        {
             return "inválido";
         }
     }
 
-    private function confirmed($campo, $input) {
-        $input_confirmed = $this->input["{$campo}_confirm"] ?? null;
+    private function confirmed( RegraDTO $regra ) {
+        $input_confirmed = $regra->all_data["{$regra->field}_confirm"] ?? null;
 
-        if($input != $input_confirmed) {
-            $label = ucfirst($campo);
+        if($regra->value != $input_confirmed)
+        {
             return "não confirmado";
         }
     }
 
-    private function min($campo, $input, $length) {
-        if(strlen($input) < $length) {
-            $label = ucfirst($campo);
-            return "deve ter no mínimo $length caracteres";
+    private function min( RegraDTO $regra) {
+        if(strlen($regra->value) < $regra->config)
+        {
+            return "deve ter no mínimo $regra->config caracteres";
         }
     }
 
-    private function strong($campo, $input) {
-        if(!strpos("*", $input)){
-            $label = ucfirst($campo);
+    private function strong( RegraDTO $regra ) {
+        if(!strpos("*", $regra->value))
+        {
             return "precisa ter um '*'";
         }
     }
@@ -59,7 +60,14 @@ class Validacao {
                 $nmRegra = $exploded[0];
                 $config = isset($exploded[1]) ? $exploded[1] : null;
 
-                $erro = $validacao->$nmRegra($campo, $input, $config);
+                $regra = new RegraDTO(
+                    field: $campo,
+                    value: $input,
+                    config: $config,
+                    all_data: $dados,
+                );
+
+                $erro = $validacao->$nmRegra($regra);
 
                 if($erro) {
                     $validacao->validacoes[$campo][] = $erro;
