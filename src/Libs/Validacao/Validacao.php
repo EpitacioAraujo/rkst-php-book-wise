@@ -2,6 +2,8 @@
 
 namespace Epitas\App\Libs\Validacao;
 
+use Epitas\App\Utils\Container;
+
 class Validacao {
     public $validacoes = [];
 
@@ -39,6 +41,33 @@ class Validacao {
         if(!strpbrk($regra->value, "!@#$%¨&*()_+-=[]{}ºª°.,><§¬¢£³²¹", ))
         {
             return "mínimo 1 caractere especial";
+        }
+    }
+
+    private function unique (RegraDTO $regra ) {
+        $regra->field;
+        $regra->value;
+        $regra->config;
+        
+        $db = Container::getInstance()->get('database');
+
+        $sanitizedTable = preg_replace('/[^a-zA-Z0-9_]/', '', $regra->config);
+        $sanitizedColumn = preg_replace('/[^a-zA-Z0-9_]/', '', $regra->field);
+
+        $query = <<<SQL
+            select id from `{$sanitizedTable}` where `{$sanitizedColumn}` = :valor
+        SQL;
+
+        $item = $db->query(
+            query: $query,
+            params: [
+                "valor" => $regra->value
+            ]
+        )->fetch();
+
+        if($item)
+        {
+            return "indisponível";
         }
     }
 

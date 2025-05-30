@@ -78,8 +78,8 @@ class AuthController
         try{
             $validacao = Validacao::validar([
                 'nome' => ['required'],
+                'email' => ['required', 'email', 'confirmed', 'unique:usuarios'],
                 'email_confirm' => ['required', 'email'],
-                'email' => ['required', 'email', 'confirmed'],
                 'senha' => ['required', 'min:8', 'strong']
             ], $_POST);
 
@@ -115,8 +115,8 @@ class AuthController
 
             return header('Location: /auth');
         }catch(Exception $ex) {
-            flash()->push('Auth.SingUp.Message.Error', 'Erro ao cadastrar!');
-
+            flash()->push('Global.Message.Error', 'Um erro inesperado ocorreu!');
+            return header('Location: /auth');
             // dd([
             //     $ex->getMessage()
             // ]);
