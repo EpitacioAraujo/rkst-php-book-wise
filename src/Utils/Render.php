@@ -16,3 +16,11 @@ function render($view, $data = []) {
     // Return the rendered output
     return $output;
 }
+
+function render_view($view, $data = []) {
+    $result = render($view, $data = []);
+
+    flash()->clear();
+
+    return $result;
+}

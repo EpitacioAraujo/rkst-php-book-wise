@@ -13,13 +13,9 @@ class AuthController
     {
         $mensagem = $_GET['mensagem'] ?? null;
 
-        $content = render('pages/auth/auth', [
+        return render_view('pages/auth/auth', [
             'mensagem' => $mensagem
         ]);
-
-        flash()->clear();
-
-        return $content;
     }
 
     public static function sigIn(DB $db)
@@ -43,33 +39,46 @@ class AuthController
 
         $query = <<<SQL
             select * from usuarios
-            where true
-                and email = :email
-                and senha = :senha
+            where email = :email
         SQL;
 
         $usuario = $db->query(
             query: $query,
             class: Usuario::class,
             params: [
-                "email" => $email,
-                "senha" => $senha
+                "email" => $email
             ])->fetch();
 
         if(!$usuario) {
-            flash()->push('Auth.SignIn.Message.Error', "Email ou senha incorreto");
+            flash()->push('Auth.SignIn.Message.Error', "Email ou senha incorretos");
             flash()->push('Auth.SignIn.Fields', [
                 "email" => $email,
                 "senha" => ""
             ]);
 
             header("Location: /auth");
+            exit();
+        }
+
+        $passIsValid = password_verify($_POST['senha'], $usuario->senha);
+
+        if(!$passIsValid) {
+            flash()->push('Auth.SignIn.Message.Error', "Email ou senha incorretos");
+            flash()->push('Auth.SignIn.Fields', [
+                "email" => $email,
+                "senha" => ""
+            ]);
+
+            header("Location: /auth");
+            exit();
         }
 
         if($usuario) {
-            $_SESSION['auth'] = $usuario;
-            $_SESSION['mensage'] = "Seja bem vindo" . $usuario->nome . "!";
+            session()->push('auth', $usuario);
+            flash()->push('Global.Message.Success', "Seja bem vindo" . $usuario->nome . "!");
+
             header("Location: /");
+            exit();
         }
     }
 
@@ -82,8 +91,6 @@ class AuthController
                 'email_confirm' => ['required', 'email'],
                 'senha' => ['required', 'min:8', 'strong']
             ], $_POST);
-
-            flash()->push('Auth.SingUp.Fields', []);
             
             if($validacao->naoPassou()) {
                 flash()->push('Auth.SingUp.Fields', [
@@ -107,16 +114,18 @@ class AuthController
                 params: [
                     'nome' => $_POST['nome'],
                     'email' => $_POST['email'],
-                    'senha' => $_POST['senha']
+                    'senha' => password_hash($_POST['senha'], PASSWORD_DEFAULT)
                 ]
             )->fetch();
 
             flash()->push('Auth.SingUp.Message.Success', 'Cadastrado com sucesso!');
 
-            return header('Location: /auth');
+            header('Location: /auth');
+            exit();
         }catch(Exception $ex) {
             flash()->push('Global.Message.Error', 'Um erro inesperado ocorreu!');
-            return header('Location: /auth');
+            header('Location: /auth');
+            exit();
             // dd([
             //     $ex->getMessage()
             // ]);
@@ -126,5 +135,6 @@ class AuthController
     public static function signOut() {
         session_destroy();
         header("Location: /");
+        exit();
     }
 }
