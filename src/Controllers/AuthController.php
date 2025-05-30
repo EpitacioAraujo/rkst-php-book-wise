@@ -4,6 +4,7 @@ namespace Epitas\App\Controllers;
 
 use Epitas\App\Database\DB;
 use Epitas\App\Libs\Validacao\Validacao;
+use Epitas\App\Models\Usuario;
 use Exception;
 
 class AuthController
@@ -29,10 +30,13 @@ class AuthController
                 and senha = :senha
         SQL;
 
-        $usuario = $db->query(query: $query, params: [
-            "email" => $email,
-            "senha" => $senha
-        ])->fetch();
+        $usuario = $db->query(
+            query: $query,
+            class: Usuario::class,
+            params: [
+                "email" => $email,
+                "senha" => $senha
+            ])->fetch();
 
         if(!$usuario) {
             $_SESSION['Auth.Login.Message.Error'] = "Email ou senha incorreto";
@@ -43,7 +47,7 @@ class AuthController
 
         if($usuario) {
             $_SESSION['auth'] = $usuario;
-            $_SESSION['mensage'] = "Seja bem vindo" . $usuario['nome'] . "!";
+            $_SESSION['mensage'] = "Seja bem vindo" . $usuario->nome . "!";
             header("Location: /");
         }
     }
@@ -90,5 +94,10 @@ class AuthController
             //     $ex->getMessage()
             // ]);
         }
+    }
+
+    public static function logout() {
+        session_destroy();
+        header("Location: /");
     }
 }

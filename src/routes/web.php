@@ -42,3 +42,10 @@ Router::post(
         return AuthController::auth($container->get('database'));
     }
 );
+
+Router::get(
+    path: '/logout',
+    action: function () use ($container) {
+        return AuthController::logout();
+    }
+);
