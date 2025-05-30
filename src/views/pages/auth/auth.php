@@ -16,7 +16,7 @@
         <h3 class="m-3 font-semibold">Registro</h3>
 
         <div class="p-3">
-            <?= render('pages/auth/partials/formSingUp') ?>
+            <?= render('pages/auth/partials/formSignUp') ?>
         </div>
     </div>
 </section>

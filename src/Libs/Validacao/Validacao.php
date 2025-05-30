@@ -7,21 +7,21 @@ use Epitas\App\Utils\Container;
 class Validacao {
     public $validacoes = [];
 
-    private function required( RegraDTO $regra ) {
+    private function required( RuleDTO $regra ) {
         if(!(strlen($regra->value) > 0))
         {
             return "obrigatório";
         }
     }
 
-    private function email( RegraDTO $regra ) {
+    private function email( RuleDTO $regra ) {
         if(!filter_var($regra->value, FILTER_VALIDATE_EMAIL)) 
         {
             return "inválido";
         }
     }
 
-    private function confirmed( RegraDTO $regra ) {
+    private function confirmed( RuleDTO $regra ) {
         $input_confirmed = $regra->all_data["{$regra->field}_confirm"] ?? null;
 
         if($regra->value != $input_confirmed)
@@ -30,21 +30,21 @@ class Validacao {
         }
     }
 
-    private function min( RegraDTO $regra) {
+    private function min( RuleDTO $regra) {
         if(strlen($regra->value) < $regra->config)
         {
             return "deve ter no mínimo $regra->config caracteres";
         }
     }
 
-    private function strong( RegraDTO $regra ) {
+    private function strong( RuleDTO $regra ) {
         if(!strpbrk($regra->value, "!@#$%¨&*()_+-=[]{}ºª°.,><§¬¢£³²¹", ))
         {
             return "mínimo 1 caractere especial";
         }
     }
 
-    private function unique (RegraDTO $regra ) {
+    private function unique (RuleDTO $regra ) {
         $regra->field;
         $regra->value;
         $regra->config;
@@ -55,13 +55,13 @@ class Validacao {
         $sanitizedColumn = preg_replace('/[^a-zA-Z0-9_]/', '', $regra->field);
 
         $query = <<<SQL
-            select id from `{$sanitizedTable}` where `{$sanitizedColumn}` = :valor
+            select id from `{$sanitizedTable}` where `{$sanitizedColumn}` = :value
         SQL;
 
         $item = $db->query(
             query: $query,
             params: [
-                "valor" => $regra->value
+                "value" => $regra->value
             ]
         )->fetch();
 
@@ -71,36 +71,36 @@ class Validacao {
         }
     }
 
-    public function naoPassou(){
+    public function failed(){
         $isError = array_find($this->validacoes, fn ($errors) => sizeof($errors) > 0);
         return (bool) $isError;
     }
 
-    public static function validar(array $regras, array $dados) {
+    public static function validate(array $rules, array $data) {
         $validacao = new Self;
 
-        foreach($regras as $campo => $regrasDoCampo):
-            $input = isset($dados[$campo]) ? $dados[$campo] : "";
+        foreach($rules as $field => $fieldRules):
+            $input = isset($data[$field]) ? $data[$field] : "";
 
-            $validacao->validacoes[$campo] = [];
+            $validacao->validacoes[$field] = [];
 
-            foreach($regrasDoCampo as $regra):
-                $exploded = explode(":", $regra);
+            foreach($fieldRules as $rule):
+                $exploded = explode(":", $rule);
 
-                $nmRegra = $exploded[0];
+                $ruleName = $exploded[0];
                 $config = isset($exploded[1]) ? $exploded[1] : null;
 
-                $regra = new RegraDTO(
-                    field: $campo,
+                $regra = new RuleDTO(
+                    field: $field,
                     value: $input,
                     config: $config,
-                    all_data: $dados,
+                    all_data: $data,
                 );
 
-                $erro = $validacao->$nmRegra($regra);
+                $error = $validacao->$ruleName($regra);
 
-                if($erro) {
-                    $validacao->validacoes[$campo][] = $erro;
+                if($error) {
+                    $validacao->validacoes[$field][] = $error;
                 }
             endforeach;
         endforeach;

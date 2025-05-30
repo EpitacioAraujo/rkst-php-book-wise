@@ -9,7 +9,7 @@ class Container
 
     private function __construct()
     {
-        // Singleton
+        // signleton
     }
 
     public static function getInstance()

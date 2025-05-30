@@ -1,9 +1,9 @@
 <?php
-    $menssagem = flash()->get(chave: 'Auth.SignIn.Message.Error');
-    $validacoes = flash()->get(chave: 'Auth.SignIn.Validacoes', defaultValue: []);
-    $valoresPadroes = flash()->get(chave: 'Auth.SignIn.Fields', defaultValue: []);
+    $message = flash()->get(key: 'Auth.SignIn.Message.Error');
+    $validations = flash()->get(key: 'Auth.SignIn.Validations', defaultValue: []);
+    $defaultValues = flash()->get(key: 'Auth.SignIn.Fields', defaultValue: []);
 
-    $singin_fields = [
+    $signin_fields = [
         "email" => [
             "label" => "Email",
             "name" => "email",
@@ -17,48 +17,48 @@
     ];
 ?>
 
-<form class="flex flex-col gap-3" method="post" action="/auth/singin">
-    <?php if ($menssagem && strlen($menssagem)): ?>
+<form class="flex flex-col gap-3" method="post" action="/auth/signin">
+    <?php if ($message && strlen($message)): ?>
         <div class="text-red-800">
-            <?= $menssagem ?>
+            <?= $message ?>
         </div>
     <?php endif; ?>
     
     <?php
-        foreach ($singin_fields as $campo => $campo_config):
+        foreach ($signin_fields as $field => $field_config):
             [
-                "name" => $campo_name,
-                "label" => $campo_label,
-                "type" => $campo_type
-            ] = $campo_config;
+                "name" => $field_name,
+                "label" => $field_label,
+                "type" => $field_type
+            ] = $field_config;
 
-            $error_mensage = "";
+            $error_message = "";
             $input_class = "border-stone-800";
             $value = "";
 
-            if (isset($validacoes[$campo_name]) && sizeof($validacoes[$campo_name]) > 0) {
-                $error_mensage = $validacoes[$campo_name][0];
+            if (isset($validations[$field_name]) && sizeof($validations[$field_name]) > 0) {
+                $error_message = $validations[$field_name][0];
                 $input_class = "border-red-600";
             }
 
-            if (isset($valoresPadroes[$campo_name])) {
-                $value = $valoresPadroes[$campo_name];
+            if (isset($defaultValues[$field_name])) {
+                $value = $defaultValues[$field_name];
             }
         ?>
 
         <div class="flex flex-col gap-2">
-            <label for="<?= $campo_name ?>">
-                <?= $campo_label ?>
+            <label for="<?= $field_name ?>">
+                <?= $field_label ?>
 
                 <span class="text-red-700 text-sm">
-                    <?= $error_mensage ?>
+                    <?= $error_message ?>
                 </span>
             </label>
 
             <input
-                id="<?= $campo_name ?>"
-                type="<?= $campo_type ?>"
-                name="<?= $campo_name ?>"
+                id="<?= $field_name ?>"
+                type="<?= $field_type ?>"
+                name="<?= $field_name ?>"
                 value="<?= $value ?>"
                 class="border-2 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1 <?= $input_class ?>" />
         </div>

@@ -3,16 +3,16 @@
 namespace Epitas\App\Utils;
 
 class Flash {
-    public function push($chave, $valor)
+    public function push($key, $valor)
     {
-        $_SESSION["Flash.{$chave}"] = $valor;
+        $_SESSION["Flash.{$key}"] = $valor;
     }
 
-    public function get($chave, $defaultValue = null)
+    public function get($key, $defaultValue = null)
     {
-        if(!isset($_SESSION["Flash.{$chave}"])) return $defaultValue;
+        if(!isset($_SESSION["Flash.{$key}"])) return $defaultValue;
 
-        return $_SESSION["Flash.{$chave}"];
+        return $_SESSION["Flash.{$key}"];
     }
 
     public function clear() {

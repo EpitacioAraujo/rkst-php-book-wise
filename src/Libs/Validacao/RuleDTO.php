@@ -2,7 +2,7 @@
 
 namespace Epitas\App\Libs\Validacao;
 
-class RegraDTO {
+class RuleDTO {
     public function __construct(
         public readonly string $field,
         public readonly string $value,

@@ -1,11 +1,11 @@
 <?php
-    $fields = flash()->get('Auth.SingUp.Fields', []);
-    $validacoes = flash()->get('Auth.SingUp.Validacoes', []);
+    $fields = flash()->get('Auth.SignUp.Fields', []);
+    $validations = flash()->get('Auth.SignUp.Validations', []);
 
-    $messageSuccess = flash()->get('Auth.SingUp.Message.Success');
-    $messageError = flash()->get('Auth.SingUp.Message.Error');
+    $messageSuccess = flash()->get('Auth.SignUp.Message.Success');
+    $messageError = flash()->get('Auth.SignUp.Message.Error');
 
-    $singup_fields = [
+    $signup_fields = [
         "nome" => [
             "label" => "Nome",
             "name" => "nome",
@@ -39,49 +39,49 @@
     <hr class="w-full my-3 border-stone-800" />
 <?php endif; ?>
 
-<form class="p-3 flex flex-col gap-3" method="post" action="/auth/singup">
+<form class="p-3 flex flex-col gap-3" method="post" action="/auth/signup">
     <?php
-        foreach ($singup_fields as $campo => $campo_config):
+        foreach ($signup_fields as $field => $field_config):
             [
-                "name" => $campo_name,
-                "label" => $campo_label,
-                "type" => $campo_type
-            ] = $campo_config;
+                "name" => $field_name,
+                "label" => $field_label,
+                "type" => $field_type
+            ] = $field_config;
 
-        $error_mensage = "";
+        $error_message = "";
         $input_class = "border-stone-800";
         $value = "";
 
-        if (isset($validacoes[$campo_name]) && sizeof($validacoes[$campo_name]) > 0) {
-            $error_mensage = $validacoes[$campo_name][0] . "*";
+        if (isset($validations[$field_name]) && sizeof($validations[$field_name]) > 0) {
+            $error_message = $validations[$field_name][0] . "*";
             $input_class = "border-red-600";
         }
 
-        if (isset($fields[$campo_name])) {
-            $value = $fields[$campo_name];
+        if (isset($fields[$field_name])) {
+            $value = $fields[$field_name];
         }
     ?>
 
         <div class="flex flex-col gap-2">
-            <label for="<?= $campo_name ?>">
-                <?= $campo_label ?>
+            <label for="<?= $field_name ?>">
+                <?= $field_label ?>
 
                 <span class="text-red-700 text-sm">
-                    <?= $error_mensage ?>
+                    <?= $error_message ?>
                 </span>
             </label>
 
             <input
-                id="<?= $campo_name ?>"
-                type="<?= $campo_type ?>"
-                name="<?= $campo_name ?>"
+                id="<?= $field_name ?>"
+                type="<?= $field_type ?>"
+                name="<?= $field_name ?>"
                 value="<?= $value ?>"
                 class="border-2 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1 <?= $input_class ?>" />
         </div>
     <?php endforeach; ?>
 
     <div>
-        <button type="reset" class="btn btn-secondary">Cancelar</button>
-        <button type="submit" class="btn">Registrar</button>
+        <button type="reset" class="btn btn-secondary">Cancel</button>
+        <button type="submit" class="btn">Register</button>
     </div>
 </form>

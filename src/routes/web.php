@@ -30,14 +30,14 @@ Router::get(
 );
 
 Router::post(
-    path: '/auth/singup',
+    path: '/auth/signup',
     action: function () use ($container) {
-        return AuthController::singUp($container->get('database'));
+        return AuthController::signUp($container->get('database'));
     }
 );
 
 Router::post(
-    path: '/auth/singin',
+    path: '/auth/signin',
     action: function () use ($container) {
         return AuthController::sigIn($container->get('database'));
     }

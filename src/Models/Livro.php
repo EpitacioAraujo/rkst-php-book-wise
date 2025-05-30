@@ -8,4 +8,5 @@ class Livro {
     public $autor;
     public $descricao;
     public $ano_lancamento;
+    public $fk_usuario;
 }

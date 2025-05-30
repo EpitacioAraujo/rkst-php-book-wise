@@ -1,5 +1,5 @@
-insert into livros (titulo, autor, descricao, ano_lancamento) values
-('O Senhor dos Anéis', 'J.R.R. Tolkien', 'Uma épica história de fantasia.', 1954),
-('1984', 'George Orwell', 'Um romance distópico sobre vigilância e totalitarismo.', 1949),
-('Dom Casmurro', 'Machado de Assis', 'Um romance psicológico sobre ciúmes e traição.', 1899),
-('A Revolução dos Bichos', 'George Orwell', 'Uma fábula política sobre a Revolução Russa.', 1945);
+insert into livros (titulo, autor, descricao, ano_lancamento, fk_usuario) values
+('O Senhor dos Anéis', 'J.R.R. Tolkien', 'Uma épica história de fantasia.', 1954, 1),
+('1984', 'George Orwell', 'Um romance distópico sobre vigilância e totalitarismo.', 1949, 1),
+('Dom Casmurro', 'Machado de Assis', 'Um romance psicológico sobre ciúmes e traição.', 1899, 1),
+('A Revolução dos Bichos', 'George Orwell', 'Uma fábula política sobre a Revolução Russa.', 1945, 1);

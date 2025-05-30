@@ -11,24 +11,27 @@ class AuthController
 {
     public static function auth()
     {
-        $mensagem = $_GET['mensagem'] ?? null;
+        $message = $_GET['message'] ?? null;
 
         return render_view('pages/auth/auth', [
-            'mensagem' => $mensagem
+            'message' => $message
         ]);
     }
 
     public static function sigIn(DB $db)
     {
         $email = $_POST['email'];
-        $senha = $_POST['senha'];
+        $password = $_POST['senha'];
 
-        $validacao = Validacao::validar([
+        $validacao = Validacao::validate([
             "email" => ["required", "email"],
             "senha" => ["required"]
-        ], $_POST);
+        ], [
+            "email" => $email,
+            "senha" => $password
+        ]);
 
-        if($validacao->naoPassou()) {
+        if($validacao->failed()) {
             flash()->push('Auth.SignIn.Validacoes', $validacao->validacoes);
             flash()->push('Auth.SignIn.Fields', [
                 "email" => $email
@@ -60,7 +63,7 @@ class AuthController
             exit();
         }
 
-        $passIsValid = password_verify($_POST['senha'], $usuario->senha);
+        $passIsValid = password_verify($password, $usuario->senha);
 
         if(!$passIsValid) {
             flash()->push('Auth.SignIn.Message.Error', "Email ou senha incorretos");
@@ -75,30 +78,30 @@ class AuthController
 
         if($usuario) {
             session()->push('auth', $usuario);
-            flash()->push('Global.Message.Success', "Seja bem vindo" . $usuario->nome . "!");
+            flash()->push('Global.Message.Success', "Seja bem vindo " . $usuario->nome . "!");
 
             header("Location: /");
             exit();
         }
     }
 
-    public static function singUp(DB $db)
+    public static function signUp(DB $db)
     {
         try{
-            $validacao = Validacao::validar([
+            $validacao = Validacao::validate([
                 'nome' => ['required'],
                 'email' => ['required', 'email', 'confirmed', 'unique:usuarios'],
                 'email_confirm' => ['required', 'email'],
                 'senha' => ['required', 'min:8', 'strong']
             ], $_POST);
             
-            if($validacao->naoPassou()) {
-                flash()->push('Auth.SingUp.Fields', [
+            if($validacao->failed()) {
+                flash()->push('Auth.SignUp.Fields', [
                     "nome" => $_POST['nome'],
                     "email" => $_POST['email'],
                     "email_confirm" => $_POST['email_confirm'],
                 ]);
-                flash()->push('Auth.SingUp.Validacoes', $validacao->validacoes);
+                flash()->push('Auth.SignUp.Validations', $validacao->validacoes);
 
                 header('Location: /auth');
                 exit();
@@ -118,7 +121,7 @@ class AuthController
                 ]
             )->fetch();
 
-            flash()->push('Auth.SingUp.Message.Success', 'Cadastrado com sucesso!');
+            flash()->push('Auth.SignUp.Message.Success', 'Cadastrado com sucesso!');
 
             header('Location: /auth');
             exit();
@@ -126,9 +129,6 @@ class AuthController
             flash()->push('Global.Message.Error', 'Um erro inesperado ocorreu!');
             header('Location: /auth');
             exit();
-            // dd([
-            //     $ex->getMessage()
-            // ]);
         }
     }
 

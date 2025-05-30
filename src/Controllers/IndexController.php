@@ -18,7 +18,7 @@ class IndexController {
                 OR  descricao LIKE :pesquisa
         SQL;
         
-        $livros = $database->query(
+        $books = $database->query(
             query: $sql,
             class: Livro::class,
             params: [
@@ -27,7 +27,7 @@ class IndexController {
         )->fetchAll();
 
         return render_view('pages/home/home', [
-            "livros" => $livros
+            "books" => $books
         ]);
     }
 }

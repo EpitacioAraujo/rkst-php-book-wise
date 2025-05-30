@@ -12,7 +12,7 @@ class LivroController {
             SELECT * FROM livros WHERE id = :id
         SQL;
 
-        $livro = $database->query(
+        $book = $database->query(
             query: $sql,
             class: Livro::class,
             params: [
@@ -21,7 +21,7 @@ class LivroController {
         )->fetch();
 
         return render_view('pages/livro/livro', [
-            "livro" => $livro
+            "book" => $book
         ]);
     }
 }
