@@ -20,8 +20,12 @@ class LivroController {
             ]
         )->fetch();
 
-        return render('pages/livro/livro', [
+        $content = render('pages/livro/livro', [
             "livro" => $livro
         ]);
+
+        flash()->clear();
+
+        return $content;
     }
 }

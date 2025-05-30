@@ -9,19 +9,37 @@ use Exception;
 
 class AuthController
 {
-    public static function sigin()
+    public static function auth()
     {
         $mensagem = $_GET['mensagem'] ?? null;
 
-        return render('pages/sigin/sigin', [
+        $content = render('pages/auth/auth', [
             'mensagem' => $mensagem
         ]);
+
+        flash()->clear();
+
+        return $content;
     }
 
-    public static function auth(DB $db)
+    public static function sigIn(DB $db)
     {
         $email = $_POST['email'];
         $senha = $_POST['senha'];
+
+        $validacao = Validacao::validar([
+            "email" => ["required", "email"],
+            "senha" => ["required"]
+        ], $_POST);
+
+        if($validacao->naoPassou()) {
+            flash()->push('Auth.SignIn.Validacoes', $validacao->validacoes);
+            flash()->push('Auth.SignIn.Fields', [
+                "email" => $email
+            ]);
+            header("Location: /auth");
+            exit();
+        }
 
         $query = <<<SQL
             select * from usuarios
@@ -39,10 +57,13 @@ class AuthController
             ])->fetch();
 
         if(!$usuario) {
-            $_SESSION['Auth.Login.Message.Error'] = "Email ou senha incorreto";
-            unset($_POST['senha']);
-            $_SESSION['Auth.Login.Fields'] = $_POST;
-            header("Location: /login");
+            flash()->push('Auth.SignIn.Message.Error', "Email ou senha incorreto");
+            flash()->push('Auth.SignIn.Fields', [
+                "email" => $email,
+                "senha" => ""
+            ]);
+
+            header("Location: /auth");
         }
 
         if($usuario) {
@@ -52,7 +73,7 @@ class AuthController
         }
     }
 
-    public static function register(DB $db)
+    public static function singUp(DB $db)
     {
         try{
             $validacao = Validacao::validar([
@@ -62,12 +83,17 @@ class AuthController
                 'senha' => ['required', 'min:8', 'strong']
             ], $_POST);
 
-            $_SESSION['Auth.Register.Fields'] = [];
-
+            flash()->push('Auth.SingUp.Fields', []);
+            
             if($validacao->naoPassou()) {
-                $_SESSION['Auth.Register.Fields'] = $_POST;
-                $_SESSION['validacao'] = $validacao->validacoes;
-                header('Location: /login');
+                flash()->push('Auth.SingUp.Fields', [
+                    "nome" => $_POST['nome'],
+                    "email" => $_POST['email'],
+                    "email_confirm" => $_POST['email_confirm'],
+                ]);
+                flash()->push('Auth.SingUp.Validacoes', $validacao->validacoes);
+
+                header('Location: /auth');
                 exit();
             }
 
@@ -85,18 +111,19 @@ class AuthController
                 ]
             )->fetch();
 
-            $_SESSION['Auth.Message.Success'] = 'Cadastrado com sucesso!';
+            flash()->push('Auth.SingUp.Message.Success', 'Cadastrado com sucesso!');
 
-            return header('Location: /login');
+            return header('Location: /auth');
         }catch(Exception $ex) {
-            $_SESSION['Auth.Message.Error'] = 'Erro ao cadastrar!';
+            flash()->push('Auth.SingUp.Message.Error', 'Erro ao cadastrar!');
+
             // dd([
             //     $ex->getMessage()
             // ]);
         }
     }
 
-    public static function logout() {
+    public static function signOut() {
         session_destroy();
         header("Location: /");
     }

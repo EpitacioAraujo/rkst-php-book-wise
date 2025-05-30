@@ -26,8 +26,12 @@ class IndexController {
             ]
         )->fetchAll();
 
-        return render('pages/home/home', [
+        $content = render('pages/home/home', [
             "livros" => $livros
         ]);
+
+        flash()->clear();
+
+        return $content;
     }
 }

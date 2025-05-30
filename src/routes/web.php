@@ -23,29 +23,29 @@ Router::get(
 );
 
 Router::get(
-    path: '/login',
-    action: function () use ($container) {
-        return AuthController::sigin();
-    }
-);
-
-Router::post(
-    path: '/singup',
-    action: function () use ($container) {
-        return AuthController::register($container->get('database'));
-    }
-);
-
-Router::post(
     path: '/auth',
     action: function () use ($container) {
-        return AuthController::auth($container->get('database'));
+        return AuthController::auth();
+    }
+);
+
+Router::post(
+    path: '/auth/singup',
+    action: function () use ($container) {
+        return AuthController::singUp($container->get('database'));
+    }
+);
+
+Router::post(
+    path: '/auth/singin',
+    action: function () use ($container) {
+        return AuthController::sigIn($container->get('database'));
     }
 );
 
 Router::get(
-    path: '/logout',
+    path: '/auth/signout',
     action: function () use ($container) {
-        return AuthController::logout();
+        return AuthController::signOut();
     }
 );

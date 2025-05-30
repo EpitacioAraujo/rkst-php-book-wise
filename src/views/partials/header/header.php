@@ -8,11 +8,11 @@
         </ul>
 
         <?php if(isset($_SESSION['auth'])):?>
-            <a href="/logout">
+            <a href="/auth/signout">
                 Olá, <?= $_SESSION['auth']->nome ?>!
             </a>
         <?php else: ?>
-            <a class="hover:underlined" href="/login">Fazer login</a>
+            <a class="hover:underlined" href="/auth">Fazer login</a>
         <?php endif; ?>
     </nav>
 </header>
