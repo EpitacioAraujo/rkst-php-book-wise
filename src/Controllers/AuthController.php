@@ -29,10 +29,23 @@ class AuthController
                 and senha = :senha
         SQL;
 
-        $db->query(query: $query, params: [
+        $usuario = $db->query(query: $query, params: [
             "email" => $email,
             "senha" => $senha
         ])->fetch();
+
+        if(!$usuario) {
+            $_SESSION['Auth.Login.Message.Error'] = "Email ou senha incorreto";
+            unset($_POST['senha']);
+            $_SESSION['Auth.Login.Fields'] = $_POST;
+            header("Location: /login");
+        }
+
+        if($usuario) {
+            $_SESSION['auth'] = $usuario;
+            $_SESSION['mensage'] = "Seja bem vindo" . $usuario['nome'] . "!";
+            header("Location: /");
+        }
     }
 
     public static function register(DB $db)
@@ -45,7 +58,10 @@ class AuthController
                 'senha' => ['required', 'min:8', 'strong']
             ], $_POST);
 
+            $_SESSION['Auth.Register.Fields'] = [];
+
             if($validacao->naoPassou()) {
+                $_SESSION['Auth.Register.Fields'] = $_POST;
                 $_SESSION['validacao'] = $validacao->validacoes;
                 header('Location: /login');
                 exit();
@@ -61,15 +77,18 @@ class AuthController
                 params: [
                     'nome' => $_POST['nome'],
                     'email' => $_POST['email'],
-                    'senha' => password_hash($_POST['senha'], PASSWORD_DEFAULT)
+                    'senha' => $_POST['senha']
                 ]
-            )->execute();
+            )->fetch();
 
-            return header('Location: /login?mensagem="Cadastro realizado com sucesso!"');
+            $_SESSION['Auth.Message.Success'] = 'Cadastrado com sucesso!';
+
+            return header('Location: /login');
         }catch(Exception $ex) {
-            dd([
-                $ex->getMessage()
-            ]);
+            $_SESSION['Auth.Message.Error'] = 'Erro ao cadastrar!';
+            // dd([
+            //     $ex->getMessage()
+            // ]);
         }
     }
 }

@@ -9,5 +9,7 @@
             "src/Utils/Render.php"
         ]
     },
-    "require": {}
+    "require": {
+        "php": "^8.4"
+    }
 }

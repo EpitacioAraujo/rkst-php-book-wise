@@ -24,7 +24,7 @@ class Validacao {
 
         if($regra->value != $input_confirmed)
         {
-            return "não confirmado";
+            return "não confere";
         }
     }
 
@@ -38,12 +38,13 @@ class Validacao {
     private function strong( RegraDTO $regra ) {
         if(!strpbrk($regra->value, "!@#$%¨&*()_+-=[]{}ºª°.,><§¬¢£³²¹", ))
         {
-            return "ao menos 1 caractere especial";
+            return "mínimo 1 caractere especial";
         }
     }
 
     public function naoPassou(){
-        return sizeof($this->validacoes) > 0;
+        $isError = array_find($this->validacoes, fn ($errors) => sizeof($errors) > 0);
+        return (bool) $isError;
     }
 
     public static function validar(array $regras, array $dados) {

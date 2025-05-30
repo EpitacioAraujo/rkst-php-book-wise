@@ -7,6 +7,12 @@
             <li class="hover:underline"><a href="/livros">Meus livros</a></li>
         </ul>
 
-        <a class="hover:underlined" href="/login">Fazer login</a>
+        <?php if(isset($_SESSION['auth'])):?>
+            <a href="/logout">
+                Olá, <?= $_SESSION['auth']['nome'] ?>!
+            </a>
+        <?php else: ?>
+            <a class="hover:underlined" href="/login">Fazer login</a>
+        <?php endif; ?>
     </nav>
 </header>

@@ -39,6 +39,6 @@ Router::post(
 Router::post(
     path: '/auth',
     action: function () use ($container) {
-        return AuthController::register($container->get('database'));
+        return AuthController::auth($container->get('database'));
     }
 );
