@@ -35,3 +35,10 @@ Router::post(
         return AuthController::register($container->get('database'));
     }
 );
+
+Router::post(
+    path: '/auth',
+    action: function () use ($container) {
+        return AuthController::register($container->get('database'));
+    }
+);

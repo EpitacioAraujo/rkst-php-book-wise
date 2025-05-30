@@ -17,13 +17,31 @@ class AuthController
         ]);
     }
 
+    public static function auth(DB $db)
+    {
+        $email = $_POST['email'];
+        $senha = $_POST['senha'];
+
+        $query = <<<SQL
+            select * from usuarios
+            where true
+                and email = :email
+                and senha = :senha
+        SQL;
+
+        $db->query(query: $query, params: [
+            "email" => $email,
+            "senha" => $senha
+        ])->fetch();
+    }
+
     public static function register(DB $db)
     {
         try{
             $validacao = Validacao::validar([
                 'nome' => ['required'],
-                'email' => ['required', 'email', 'confirmed'],
                 'email_confirm' => ['required', 'email'],
+                'email' => ['required', 'email', 'confirmed'],
                 'senha' => ['required', 'min:8', 'strong']
             ], $_POST);
 

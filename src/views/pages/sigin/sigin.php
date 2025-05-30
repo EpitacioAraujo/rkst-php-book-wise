@@ -6,7 +6,7 @@
 
         <hr class="w-full my-3 border-stone-800" />
 
-        <form class="p-3 flex flex-col gap-3">
+        <form class="p-3 flex flex-col gap-3" method="post" action="/auth">
             <div class="flex flex-col gap-2">
                 <label for="email">Email</label>
                 <input id="email" type="text" name="email" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" />
@@ -14,7 +14,7 @@
 
             <div class="flex flex-col gap-2">
                 <label for="senha">Senha</label>
-                <input id="senha" type="password" name="password" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" />
+                <input id="senha" type="password" name="senha" class="border-2 border-stone-800 bg-stone-900 rounded-md focus:outline-none text-md px-2 py-1" />
             </div>
 
             <div>
