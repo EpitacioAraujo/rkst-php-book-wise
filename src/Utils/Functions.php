@@ -16,10 +16,17 @@ function dd($data)
     die();
 }
 
-function flash() {
+function flash()
+{
     return new Flash;
 }
 
-function Session() {
+function session()
+{
     return new Session;
+}
+
+function auth()
+{
+    return session()->get('auth');
 }
