@@ -1,28 +1,25 @@
 <?= render('partials/header/header'); ?>
 
-<?php
-    $avarage;
-    $total_assessments
-?>
-
 <div class="max-w-screen-lg mx-auto mt-5 px-3 flex flex-col gap-5">
     <?= render('components/book_details/book_details', [
-        "book" => $book,
-        "book_avarage" => $avarage,
-        "total_assessments" => $total_assessments
+        "book" => $book
     ]); ?>
 
     <h2>Avaliações</h2>
 
     <div class="grid grid-cols-8 gap-4">
-        <div class="col-span-5">
+        <div class="col-span-5 flex flex-col gap-5">
             <?php foreach ( $assessments as $assessment): ?>
-                <div class="border-stone-800 border-1 p-5">
-                    <?= $assessment->avaliacao ?>
+                <div class="border-2 border-stone-800 rounded-md p-3">
+                    <div>
+                        <?php for ( $i = 1; $assessment->nota >= $i; $i++): ?>
+                            ⭐
+                        <?php endfor ?>
+                    </div>
 
-                    <?php for ( $i = 1; $assessment->nota >= $i; $i++): ?>
-                        ⭐
-                    <?php endfor ?>
+                    <p class="mt-3 italic">
+                        &ldquo;<?= $assessment->avaliacao ?>&rdquo;
+                    </p>
                 </div>
             <?php endforeach ?>
         </div>

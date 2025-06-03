@@ -31,7 +31,7 @@ function auth()
     return session()->get('auth');
 }
 
-function abort($location = "/")
+function redirect($location = "/")
 {
     header("Location: {$location}");
     exit();

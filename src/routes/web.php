@@ -24,6 +24,13 @@ Router::get(
 );
 
 Router::get(
+    path: '/meus-livros',
+    action: function () use ($container) {
+        return LivroController::viewMyBooks($container->get('database'));
+    }
+);
+
+Router::get(
     path: '/auth',
     action: function () use ($container) {
         return AuthController::auth();
@@ -62,5 +69,12 @@ Router::get(
     path: '/assessments',
     action: function () use ($container) {
         return AvaliacaoController::store($container->get('database'));
+    }
+);
+
+Router::post(
+    path: '/livro',
+    action: function () use ($container) {
+        return LivroController::store($container->get('database'));
     }
 );

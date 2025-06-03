@@ -2,7 +2,7 @@
 
 namespace Epitas\App\Controllers;
 
-use Epitas\App\Models\Livro;
+use Epitas\App\ViewModels\LivroViewModel;
 
 class IndexController {
     public static function index($database) {
@@ -10,17 +10,22 @@ class IndexController {
         
         $sql = <<<SQL
             SELECT 
-                *
-            FROM livros
+                L.*,
+                AVG(A.nota) as avarage,
+                COUNT(A.id) as total_assessments
+            FROM livros as L
+            LEFT JOIN avaliacoes as A on A.fk_livro = L.id
             WHERE 
                     titulo    LIKE :pesquisa
                 OR  autor     LIKE :pesquisa
                 OR  descricao LIKE :pesquisa
+            GROUP BY
+                L.id
         SQL;
-        
+
         $books = $database->query(
             query: $sql,
-            class: Livro::class,
+            class: LivroViewModel::class,
             params: [
                 "pesquisa" => "%{$pesquisa}%"
             ]

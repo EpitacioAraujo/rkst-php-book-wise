@@ -12,10 +12,10 @@
             </div>
             
             <div class="text-xs italic">
-                <?php for ( $i = 1; $book_avarage >= $i; $i++): ?>
+                <?php for ( $i = 1; $book->avarage >= $i; $i++): ?>
                     ⭐
                 <?php endfor ?>
-                (<?= $total_assessments ?> Avaliações)
+                (<?= $book->total_assessments ?> Avaliações)
             </div>
         </div>
     </div>
