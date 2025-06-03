@@ -38,7 +38,7 @@ class AvaliacaoController
                 "avaliacao" => $_POST['avaliacao'],
                 "nota" => $_POST['nota']
             ]
-        )->execute();
+        );
 
         flash()->push('Assessment.Register.Message.Success', 'Cadastro com sucesso!');
 
