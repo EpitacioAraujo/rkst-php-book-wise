@@ -57,3 +57,10 @@ Router::post(
         return AvaliacaoController::store($container->get('database'));
     }
 );
+
+Router::get(
+    path: '/assessments',
+    action: function () use ($container) {
+        return AvaliacaoController::store($container->get('database'));
+    }
+);

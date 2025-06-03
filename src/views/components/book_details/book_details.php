@@ -6,10 +6,17 @@
             <a href="/livro?id=<?= $book->id ?>" class="font-semibold text-lg">
                 <?= $book->titulo ?>
             </a>
+            
             <div class="text-xs italic">
                 <?= $book->autor ?>
             </div>
-            <div class="text-xs italic">⭐⭐⭐⭐⭐(3 Avaliações)</div>
+            
+            <div class="text-xs italic">
+                <?php for ( $i = 1; $book_avarage >= $i; $i++): ?>
+                    ⭐
+                <?php endfor ?>
+                (<?= $total_assessments ?> Avaliações)
+            </div>
         </div>
     </div>
 

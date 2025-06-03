@@ -30,3 +30,9 @@ function auth()
 {
     return session()->get('auth');
 }
+
+function abort($location = "/")
+{
+    header("Location: {$location}");
+    exit();
+}
