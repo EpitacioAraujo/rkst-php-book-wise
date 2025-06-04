@@ -9,4 +9,5 @@ class Livro {
     public $descricao;
     public $ano_lancamento;
     public $fk_usuario;
+    public $imagem;
 }

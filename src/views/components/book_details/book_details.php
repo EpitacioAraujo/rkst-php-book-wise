@@ -1,6 +1,12 @@
 <div class="border-2 border-stone-800 rounded-md p-3 w-full h-full">
     <div class="flex flex-row gap-3">
-        <img src="/assets/images/livro.jpg" alt="" class="w-[100x] h-[100px]" />
+        <div class="w-[100px] h-[100px] border-stone-800 border rounded-md overflow-hidden">
+            <?php if($book->imagem): ?>
+                <img src="/assets/images/<?= $book->imagem ?>" alt="" class="w-full h-full object-cover" />
+            <?php else: ?>
+                <div class="w-full h-full flex items-center justify-center text-sm">Sem imagem</div>
+            <?php endif ?>
+        </div>
 
         <div class="flex-[1] flex flex-col align-left gap-1">
             <a href="/livro?id=<?= $book->id ?>" class="font-semibold text-lg">

@@ -92,6 +92,14 @@ class LivroController {
             redirect();
         }
 
+        $imagem = $_FILES['imagem'];
+
+        $novoNome = md5(rand());
+        $extension = pathinfo($imagem['name'], PATHINFO_EXTENSION);
+        $novaImagem = "{$novoNome}.{$extension}";
+        $novaImagemFullPath = __DIR__ . "/../public/assets/images/{$novaImagem}";
+        move_uploaded_file($imagem['tmp_name'], $novaImagemFullPath);
+
         $titulo = $_POST['titulo'];
         $autor = $_POST['autor'];
         $descricao = $_POST['descricao'];
@@ -115,8 +123,8 @@ class LivroController {
         }
 
         $sqlInsert = <<<SQL
-            INSERT INTO livros (titulo, autor, descricao, ano_lancamento, fk_usuario)
-            VALUES (:titulo, :autor, :descricao, :ano_lancamento, :fk_usuario)
+            INSERT INTO livros (titulo, autor, descricao, ano_lancamento, fk_usuario, imagem)
+            VALUES (:titulo, :autor, :descricao, :ano_lancamento, :fk_usuario, :imagem)
         SQL;
 
         $db->query(
@@ -126,7 +134,8 @@ class LivroController {
                 "autor" => $autor,
                 "descricao" => $descricao,
                 "ano_lancamento" => $ano_lancamento,
-                "fk_usuario" => auth()->id
+                "fk_usuario" => auth()->id,
+                "imagem" => $novaImagem
             ]
         );
 

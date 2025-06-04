@@ -5,11 +5,15 @@ $validations = flash()->get(key: 'Livro.Store.Validations', defaultValue: []);
 $defaultValues = flash()->get(key: 'Livro.Store.Fields', defaultValue: []);
 
 $signin_fields = [
+    "imagem" => [
+        "label" => "Imagem",
+        "name" => "imagem",
+        "type" => "file"
+    ],
     "titulo" => [
         "label" => "titulo",
         "name" => "titulo",
         "type" => "text"
-
     ],
     "autor" => [
         "label" => "Autor",
@@ -39,7 +43,7 @@ $signin_fields = [
     <hr class="w-full my-3 border-stone-800 border-1" />
 
     <div class="p-3">
-        <form class="flex flex-col gap-3" method="post" action="/livro">
+        <form class="flex flex-col gap-3" method="post" action="/livro" enctype="multipart/form-data">
             <?php if ($error_message && strlen($error_message)): ?>
                 <div class="text-red-800">
                     <?= $error_message ?>
